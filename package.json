@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Katerus16/frontend-project-12#readme",
   "dependencies": {
     "@hexlet/chat-server": "^2.0.4",
+    "axios": "^1.8.4",
     "formik": "^2.4.6",
     "react-router-dom": "^7.5.0"
   }
