@@ -42,7 +42,6 @@ const messagesSlice = createSlice({
           state.error = null;
         })
         .addCase(setMessage.fulfilled, (state, action) => {
-          console.log(action)
           messagesAdapter.setAll(state, action);
           state.loadingStatus = 'idle';
           state.error = null;

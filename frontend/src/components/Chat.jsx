@@ -4,8 +4,9 @@ import { ArrowRightSquare } from 'react-bootstrap-icons';
 import {useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendMessage, selectors } from '../slices/messagesSlice';
+import { selectCurrentChannel } from '../slices/channelsSlice.js'
 
-export default ({currentChannel}) => {
+export default ({ currentChannel }) => {
   const [message, setMessage] = useState('');
   const currentUsername = localStorage.getItem('username');
   const isSubbmiting = false;
@@ -13,7 +14,6 @@ export default ({currentChannel}) => {
   const dispatch = useDispatch();
   const messages = useSelector(selectors.selectAll);
   const currentChannelMessages = messages.filter((message) => message.channelId === channelId);
-  console.log(currentChannelMessages);
   return (
     <Col className="p-0 h-100">
       <div className='d-flex flex-column h-100'>

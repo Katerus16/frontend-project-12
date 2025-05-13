@@ -10,6 +10,14 @@ export const addAuthUser = createAsyncThunk(
   }
 );
 
+export const createAuthUser = createAsyncThunk(
+  'authUser/create',
+  async ({username, password}) => {
+    const response = await axios.post(routes.getNewAuthUser(), { username, password });
+    return response.data;
+  }
+);
+
 const initialState = {
   error: '',
   redirect: false,
@@ -27,9 +35,19 @@ const authUserSlice = createSlice({
         localStorage.setItem('username', action.payload.username);
         state.redirect = true;
       })
+      .addCase(createAuthUser.fulfilled, (state, action) => {
+        localStorage.setItem('token', action.payload.token);
+        localStorage.setItem('username', action.payload.username);
+        state.redirect = true;
+      })
       .addCase(addAuthUser.rejected, (state, action) => {
         if (action.error.name === 'AxiosError') {
           state.error = 'Неверные имя пользователя или пароль';
+        } else ( state.error = 'Ошибка соединения')
+      })
+      .addCase(createAuthUser.rejected, (state, action) => {
+        if (action.error.name === 'AxiosError') {
+          state.error = 'Такой пользователь уже существует';
         } else ( state.error = 'Ошибка соединения')
       });
   },

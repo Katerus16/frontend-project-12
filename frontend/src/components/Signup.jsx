@@ -1,26 +1,60 @@
-import axios from 'axios';
 import { useFormik } from 'formik';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import Stack from 'react-bootstrap/Stack';
 import FormContainer from './FormContainer';
+import * as Yup from 'yup';
+import { createAuthUser } from '../slices/authUserSlice';
+import { useSelector, useDispatch } from 'react-redux'
+import {useNavigate} from "react-router-dom";
 
+const validationSchema = Yup.object().shape({
+  username: Yup.string().trim()
+    .min(3, 'От 3 до 20 символов')
+    .max(20, 'От 3 до 20 символов')
+    .required('Обязательное поле'),
+  password: Yup.string().trim()
+    .min(6, 'Не менее 6 символов')
+    .required('Обязательное поле'),
+  passwordConfirmation: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать')
+    .required('Обязательное поле'),
+});
 
 const SignupPage = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const authError = useSelector(state => state.authUser.error)
+  const redirectToHomePage  = useSelector(state => state.authUser.redirect)
+    if(redirectToHomePage) {
+      navigate("/");
+    }
+  const inputRef = useRef();
+  useEffect(() => {
+      inputRef.current?.focus();
+  }, []);
+
+  const useSubmit = () => { 
+    return ({ username, password }) => {
+      dispatch(createAuthUser({username, password}));
+    }
+  };
 
   const formik = useFormik({
       initialValues: {
         username: '',
         password: '',
+        passwordConfirmation: '',
       },
-      // onSubmit: useSubmit(setAuthFailed, setErrorMessage),
+      validationSchema,
+      onSubmit: useSubmit()
     }); 
 
   return (
     <FormContainer image= 'imagereg.png' imageAlt= 'Регистрация' regfooter={false} >
-      <Form className ='w-50 mx-auto' onSubmit=''>
+      <Form className ='w-50 mx-auto' onSubmit={formik.handleSubmit}>
         <h1 className="text-center mb-4">{'Регистрация'}</h1>
         <fieldset disabled=''>
           <Stack gap={3}>
@@ -32,18 +66,17 @@ const SignupPage = () => {
                 placeholder='Имя пользователя'
                 name="username"
                 autoComplete="username"
-                isInvalid=''
+                isInvalid={!!(authError )|| (formik.touched.username && formik.errors.username)}
+                ref={inputRef}
               />
-              {/* {signupFailed && (
-                <Form.Control.Feedback type="invalid" tooltip className="position-absolute top-0 start-100">
-                  {t('This user already exists')}
-                </Form.Control.Feedback>
+              {authError && (
+                <Form.Control.Feedback type="invalid" tooltip></Form.Control.Feedback>
               )}
               {formik.errors.username && (
                 <Form.Control.Feedback type="invalid" tooltip>
-                  {t(formik.errors.username)}
+                  {formik.errors.username}
                 </Form.Control.Feedback>
-              )} */}
+              )}
             </FloatingLabel>
             <FloatingLabel controlId="floatingPassword" label='Пароль'>
               <Form.Control
@@ -54,11 +87,14 @@ const SignupPage = () => {
                 placeholder='Пароль'
                 name="password"
                 autoComplete="current-password"
-                isInvalid=''
+                isInvalid={!!(authError) || formik.touched.password && formik.errors.password}
               />
-              {/* <Form.Control.Feedback type="invalid" tooltip>
-                {t(formik.errors.password)}
-              </Form.Control.Feedback> */}
+              <Form.Control.Feedback type="invalid" tooltip>
+                  {authError}
+                </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid" tooltip>
+                {formik.errors.password}
+              </Form.Control.Feedback>
             </FloatingLabel>
             <FloatingLabel controlId="floatingPasswordConfirmation" label={'Подтвердите пароль'}>
               <Form.Control
@@ -69,11 +105,12 @@ const SignupPage = () => {
                 placeholder='Подтвердите пароль'
                 name="passwordConfirmation"
                 autoComplete="current-passwordConfirmation"
-                isInvalid=''
+                isInvalid={formik.touched.passwordConfirmation
+                  && formik.errors.passwordConfirmation}
               />
-              {/* <Form.Control.Feedback type="invalid" tooltip>
-                {t(formik.errors.passwordConfirmation)}
-              </Form.Control.Feedback> */}
+              <Form.Control.Feedback type="invalid" tooltip>
+                {formik.errors.passwordConfirmation}
+              </Form.Control.Feedback>
             </FloatingLabel>
             <Button type="submit" variant="outline-primary">{'Зарегистрироваться'}</Button>
           </Stack>
@@ -82,5 +119,4 @@ const SignupPage = () => {
     </FormContainer>
   );
 };
-
 export default SignupPage;

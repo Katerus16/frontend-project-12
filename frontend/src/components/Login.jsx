@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {useFormik} from 'formik';
 import FormContainer from './FormContainer';
 import Stack from 'react-bootstrap/Stack';
@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {useNavigate} from "react-router-dom";
 
 
-export default () => {
+export default ({setUserAuth}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const authError = useSelector(state => state.authUser.error)
@@ -18,10 +18,15 @@ export default () => {
   if(redirectToHomePage) {
     navigate("/");
   }
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const useSubmit = () => { 
     return ({ username, password }) => {
       dispatch(addAuthUser({username, password}));
+      setUserAuth(true)
     }
   };
 
@@ -47,6 +52,7 @@ export default () => {
                 name="username"
                 autoComplete="username"
                 isInvalid={!!(authError) || (formik.touched.username && formik.errors.username)}
+                ref={inputRef}
               />
               {!!(authError) && (
                 <Form.Control.Feedback type="invalid"></Form.Control.Feedback>

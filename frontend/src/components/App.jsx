@@ -11,22 +11,28 @@ import Button from 'react-bootstrap/esm/Button.js';
 import  init  from '../init.js';
 
 
-function App() {
-  const [count, setCount] = useState(0)
-  init();
 
+function App() {
+  init();
+const [isUserAuth, setUserAuth] = useState(!!localStorage.getItem('token'))
+const AuthButton = () => {
+  return isUserAuth && (<Button className='btn btn-primary' onClick={() => { 
+    localStorage.removeItem('token')
+    setUserAuth(false)
+  }}>{'Выйти'}</Button>);
+};
   return (
     <BrowserRouter>
       <div class="d-flex flex-column h-100">
         <Navbar className="shadow-sm navbar-expand-lg navbar-light bg-white">
             <Container>
               <Navbar.Brand href='/'>Hexlet Chat</Navbar.Brand>
-              <Button className='btn btn-primary' onClick=''>{'Выйти'}</Button>
+              <AuthButton />
             </Container>
         </Navbar>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setUserAuth={setUserAuth} />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>
