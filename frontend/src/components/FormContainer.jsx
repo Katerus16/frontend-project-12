@@ -5,8 +5,10 @@ import Card from 'react-bootstrap/Card';
 import CardBody from 'react-bootstrap/CardBody';
 import Image from 'react-bootstrap/Image';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
   export default ({children, image, imageAlt, regfooter}) => {
+      const { t } = useTranslation();
   return (
       <Container fluid className='h-100'>
         <Row className='justify-content-center align-content-center h-100'>
@@ -24,8 +26,8 @@ import { Link } from 'react-router-dom';
             </CardBody>
             {regfooter && (<Card.Footer className="p-4">
               <div className="text-center">
-                <span>{'Нет аккаунта? '}</span>
-                <Link to={'/signup'}>{'Регистрация'}</Link>
+                <span>{t('Don\'t have an account? ')}</span>
+                <Link to={'/signup'}>{t('Registration')}</Link>
               </div>
           </Card.Footer>)}
           </Card>

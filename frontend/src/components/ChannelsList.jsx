@@ -4,14 +4,14 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import store from '../slices/index.js';
-import { actions as channelActions, selectCurrentChannel } from '../slices/channelsSlice.js'
-import { useDispatch, useSelector } from 'react-redux';
+import { actions as channelActions } from '../slices/channelsSlice.js'
+import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 export default ({currentChannel, channels, showModal}) => {
 
-  console.log(store.getState());
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   return (
     <Col md={2} className="col-4 border-end px-0 bg-light flex-column h-100 d-flex">
@@ -39,12 +39,12 @@ export default ({currentChannel, channels, showModal}) => {
                   split
                   variant={channel.id === currentChannel.id && 'secondary'}
                 >
-                  <span className="visually-hidden">{'Управление каналами'}</span>
+                  <span className="visually-hidden">{t('Channel management')}</span>
                 </Dropdown.Toggle>
               )}
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => showModal('removeChannel', channel)}>{'Удалить'}</Dropdown.Item>
-                <Dropdown.Item onClick={() => showModal('renameChannel', channel)}>{'Переименовать'}</Dropdown.Item>
+                <Dropdown.Item onClick={() => showModal('removeChannel', channel)}>{t('Delete')}</Dropdown.Item>
+                <Dropdown.Item onClick={() => showModal('renameChannel', channel)}>{t('Rename')}</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </li>

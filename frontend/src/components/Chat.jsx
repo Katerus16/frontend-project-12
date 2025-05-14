@@ -1,12 +1,19 @@
 import React from 'react';
 import Col from 'react-bootstrap/Col';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
-import {useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendMessage, selectors } from '../slices/messagesSlice';
-import { selectCurrentChannel } from '../slices/channelsSlice.js'
+import { useTranslation } from 'react-i18next';
+
+
 
 export default ({ currentChannel }) => {
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current?.focus();
+  });
+  const { t } = useTranslation();
   const [message, setMessage] = useState('');
   const currentUsername = localStorage.getItem('username');
   const isSubbmiting = false;
@@ -19,7 +26,7 @@ export default ({ currentChannel }) => {
       <div className='d-flex flex-column h-100'>
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0"><b>{`# ${currentChannel.name}`}</b></p>
-          <span className="text-muted">{`${currentChannelMessages.length} сообщений`}</span>
+          <span className="text-muted">{t('messagesCount', { count: currentChannelMessages.length })}</span>
         </div>
         <div id="messages-box" className="overflow-auto px-5 ">
         {currentChannelMessages.map(({ id, body, username }) => (
@@ -39,16 +46,16 @@ export default ({ currentChannel }) => {
             <div className="input-group has-validation">
               <input
                 name="body"
-                aria-label={'Новое сообщение'}
-                placeholder={'Введите сообщение...'}
+                aria-label={t('A new message')}
+                placeholder={t('Enter your message...')}
                 className="border-0 p-0 ps-2 form-control"
                 value={message}
                 onChange={(e) => {setMessage(e.target.value)}}
-                // ref={inputRef}
+                ref={inputRef}
               />
               <button type="submit" disabled="" className="btn btn-group-vertical">
                 <ArrowRightSquare size={20} />
-                <span className="visually-hidden">{'Отправить'}</span>
+                <span className="visually-hidden">{t('Send')}</span>
               </button>
             </div>
           </fieldset>
