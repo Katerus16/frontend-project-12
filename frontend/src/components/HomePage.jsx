@@ -29,7 +29,6 @@ export default () => {
   const currentChannel = useSelector(selectCurrentChannel);
 
   useEffect(() => {
-    console.log('useEffect');
     dispatch(fetchChannel());
     dispatch(setMessage());
   }, [])

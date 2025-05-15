@@ -22,13 +22,11 @@ export default (t) => {
     })
     .on('removeChannel', (payload) => {
       console.debug('removeChannel "event"', payload);
-      console.log(payload);
       store.dispatch(channelsActions.deleteChannel(payload.id));
       toast.info(t('Channel removed'));
     })
     .on('renameChannel', (payload) => {
       console.debug('renameChannel "event"', payload);
-      console.log(payload);
       const { id, name } = payload;
       store.dispatch(channelsActions.renameChannel({ id, changes: { name } }));
       toast.info(t('Channel renamed'));

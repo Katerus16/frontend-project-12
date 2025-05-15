@@ -34,7 +34,6 @@ const Rename = ({ modalInfo: { item: channel }, onHide, channels }) => {
     onSubmit:  (values) => { 
       const id = channel.id;
       const name = values.channelName
-      console.log(name)
       dispatch(renameChannel({ id, name }));
       onHide();
     },

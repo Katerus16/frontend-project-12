@@ -44,7 +44,6 @@ export default () => {
       dispatch(addAuthUser({username, password}));
     }
   };
-  console.log(localStorage.getItem('token'))
   const formik = useFormik({
     initialValues: {
       username: '',

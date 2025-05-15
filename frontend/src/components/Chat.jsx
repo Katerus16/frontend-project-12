@@ -6,8 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { sendMessage, selectors } from '../slices/messagesSlice';
 import { useTranslation } from 'react-i18next';
 import profanityFilter from 'leo-profanity';
-
-
+import { animateScroll } from 'react-scroll';
 
 export default ({ currentChannel }) => {
   const inputRef = useRef();
@@ -21,9 +20,10 @@ export default ({ currentChannel }) => {
   const channelId = currentChannel.id
   const dispatch = useDispatch();
   const messages = useSelector(selectors.selectAll);
-  console.log(messages);
   const currentChannelMessages = messages.filter((message) => message.channelId === channelId);
-  console.log(currentChannelMessages)
+  useEffect(() => {
+    animateScroll.scrollToBottom({ containerId: 'messages-box', delay: 0, duration: 0 });
+  }, [currentChannelMessages.length]);
   return (
     <Col className="p-0 h-100">
       <div className='d-flex flex-column h-100'>
@@ -44,7 +44,6 @@ export default ({ currentChannel }) => {
             e.preventDefault();
             setMessage('');
             const cleanMessage = profanityFilter.clean(message);
-            console.log(cleanMessage)
             dispatch(sendMessage({cleanMessage, channelId, currentUsername}));
           }}>
           <fieldset disabled={isSubbmiting}>

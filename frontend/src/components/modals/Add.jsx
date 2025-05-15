@@ -10,6 +10,7 @@ import { addChannel } from '../../slices/channelsSlice.js';
 import { useTranslation } from 'react-i18next';
 import profanityFilter from 'leo-profanity';
 
+
 const getValidationSchema = (channelNames) => Yup.object().shape({
   channelName: Yup.string().trim()
     .min(3, 'From 3 to 20 characters')
