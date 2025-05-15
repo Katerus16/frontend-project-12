@@ -10,9 +10,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import {useNavigate} from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 
 
-export default ({setUserAuth}) => {
+export default () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -25,6 +26,11 @@ export default ({setUserAuth}) => {
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+  useEffect(() => {
+    if(!!authError) {
+      toast.error(t(authError));
+    }
+  }, [authError]);
   const validationSchema = Yup.object().shape({
     username: Yup.string().trim()
       .min(3, 'From 3 to 20 characters')
@@ -36,10 +42,9 @@ export default ({setUserAuth}) => {
   const useSubmit = () => { 
     return ({ username, password }) => {
       dispatch(addAuthUser({username, password}));
-      setUserAuth(true)
     }
   };
-
+  console.log(localStorage.getItem('token'))
   const formik = useFormik({
     initialValues: {
       username: '',

@@ -21,12 +21,17 @@ export const createAuthUser = createAsyncThunk(
 const initialState = {
   error: '',
   redirect: false,
+  showButton: false,
 };
 
 const authUserSlice = createSlice({
   name: 'authUser',
   initialState,
   reducers: {
+    logOutUser: (state, action) => { 
+      localStorage.removeItem('token');
+      state.showButton = false;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -34,21 +39,23 @@ const authUserSlice = createSlice({
         localStorage.setItem('token', action.payload.token);
         localStorage.setItem('username', action.payload.username);
         state.redirect = true;
+        state.showButton = true;
       })
       .addCase(createAuthUser.fulfilled, (state, action) => {
         localStorage.setItem('token', action.payload.token);
         localStorage.setItem('username', action.payload.username);
         state.redirect = true;
+        state.showButton = true;
       })
       .addCase(addAuthUser.rejected, (state, action) => {
-        if (action.error.name === 'AxiosError') {
-          state.error = 'Неверные имя пользователя или пароль';
-        } else ( state.error = 'Ошибка соединения')
+        if (action.error.code === "ERR_BAD_REQUEST") {
+          state.error = 'Invalid username or password';
+        } else ( state.error = 'Connection error')
       })
       .addCase(createAuthUser.rejected, (state, action) => {
-        if (action.error.name === 'AxiosError') {
-          state.error = 'Такой пользователь уже существует';
-        } else ( state.error = 'Ошибка соединения')
+        if (action.error.name === "ERR_BAD_REQUEST") {
+          state.error = 'Invalid username or password';
+        } else ( state.error = 'Connection error')
       });
   },
 })

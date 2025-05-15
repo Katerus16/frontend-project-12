@@ -12,6 +12,7 @@ export default ({currentChannel, channels, showModal}) => {
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const currentChannelId = currentChannel ? currentChannel.id : '1';
 
   return (
     <Col md={2} className="col-4 border-end px-0 bg-light flex-column h-100 d-flex">
@@ -28,7 +29,7 @@ export default ({currentChannel, channels, showModal}) => {
             <Dropdown as={ButtonGroup} className="d-flex">
               <Button
                 className="w-100 rounded-0 text-start btn"
-                variant={(channel.id === currentChannel.id) && 'secondary'}
+                variant={(channel.id === currentChannelId) && 'secondary'}
                 onClick={() => {dispatch(channelActions.setCurrentChannelId(channel.id))}}
               >
                 <span className="me-1">#</span>
