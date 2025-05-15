@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendMessage, selectors } from '../slices/messagesSlice';
 import { useTranslation } from 'react-i18next';
+import profanityFilter from 'leo-profanity';
 
 
 
@@ -20,7 +21,9 @@ export default ({ currentChannel }) => {
   const channelId = currentChannel.id
   const dispatch = useDispatch();
   const messages = useSelector(selectors.selectAll);
+  console.log(messages);
   const currentChannelMessages = messages.filter((message) => message.channelId === channelId);
+  console.log(currentChannelMessages)
   return (
     <Col className="p-0 h-100">
       <div className='d-flex flex-column h-100'>
@@ -40,7 +43,9 @@ export default ({ currentChannel }) => {
         <form noValidate="" className="py-1 border rounded-2" onSubmit={(e) => {
             e.preventDefault();
             setMessage('');
-            dispatch(sendMessage({message, channelId, currentUsername}));
+            const cleanMessage = profanityFilter.clean(message);
+            console.log(cleanMessage)
+            dispatch(sendMessage({cleanMessage, channelId, currentUsername}));
           }}>
           <fieldset disabled={isSubbmiting}>
             <div className="input-group has-validation">

@@ -4,8 +4,8 @@ import routes from '../routes.js';
 
 export const sendMessage = createAsyncThunk(
   'message/send',
-  async ({message, channelId, currentUsername}) => {
-    const response = await axios.post(routes.getMessages(), { body: message, channelId, username: currentUsername },
+  async ({cleanMessage, channelId, currentUsername}) => {
+    const response = await axios.post(routes.getMessages(), { body: cleanMessage, channelId, username: currentUsername },
     {headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     }});

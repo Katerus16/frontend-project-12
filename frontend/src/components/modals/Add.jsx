@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { addChannel } from '../../slices/channelsSlice.js';
 import { useTranslation } from 'react-i18next';
+import profanityFilter from 'leo-profanity';
 
 const getValidationSchema = (channelNames) => Yup.object().shape({
   channelName: Yup.string().trim()
@@ -30,7 +31,7 @@ const Add = ({ onHide, channels }) => {
     initialValues: { channelName: '' },
     validationSchema: getValidationSchema(channelNames),
     onSubmit: (values) => { 
-        dispatch(addChannel(values.channelName));
+        dispatch(addChannel(profanityFilter.clean(values.channelName)));
         onHide();
     },
   });
