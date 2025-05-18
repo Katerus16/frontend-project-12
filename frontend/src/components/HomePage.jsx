@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/esm/Container.js';
 import Row from 'react-bootstrap/Row';
 import { setMessage } from '../slices/messagesSlice.js';
 import getModal from './modals/index.js';
+import {useNavigate} from "react-router-dom";
 
 const renderModal = ({ modalInfo, hideModal, channels }) => {
   if (!modalInfo.type) return null;
@@ -21,8 +22,9 @@ const renderModal = ({ modalInfo, hideModal, channels }) => {
 };
 
 export default () => {
-  if(!localStorage.getItem('token')) {
-    window.location.replace('http://localhost:5001/login')
+  const navigate = useNavigate();
+  if(localStorage.getItem('token')) {
+    navigate("/login");
   }
   const dispatch = useDispatch();
   const channels = useSelector(selectors.selectAll);
