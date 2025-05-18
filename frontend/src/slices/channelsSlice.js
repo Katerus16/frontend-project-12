@@ -1,9 +1,11 @@
+/* eslint no-param-reassign: 0 */
+
 import { createAsyncThunk, createSlice, createEntityAdapter } from '@reduxjs/toolkit';
-import routes from '../routes.js';
 import axios from 'axios';
+import routes from '../routes.js';
 
 export const fetchChannel = createAsyncThunk(
-  'channel/fetch', 
+  'channel/fetch',
   async () => {
     const response = await axios.get(routes.getChannel(), {
       headers: {
@@ -11,7 +13,7 @@ export const fetchChannel = createAsyncThunk(
       },
     });
     return response.data;
-  }
+  },
 );
 
 export const addChannel = createAsyncThunk(
@@ -23,7 +25,7 @@ export const addChannel = createAsyncThunk(
       },
     });
     return response.data;
-  }
+  },
 );
 
 export const renameChannel = createAsyncThunk(
@@ -35,19 +37,19 @@ export const renameChannel = createAsyncThunk(
       },
     });
     return response.data;
-  }
+  },
 );
 
 export const deleteChannel = createAsyncThunk(
   'channel/delete',
   async ({ id }) => {
-    const response = await axios.delete(routes.getChannelById(id),{
+    const response = await axios.delete(routes.getChannelById(id), {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
     return response.data;
-  }
+  },
 );
 
 const channelsAdapter = createEntityAdapter();
@@ -56,7 +58,7 @@ const channelsSlice = createSlice({
   name: 'channels',
   initialState: channelsAdapter.getInitialState({ loadingStatus: 'idle', error: null, currentChannelId: '1' }),
   reducers: {
-    setCurrentChannelId: (state, action) => { state.currentChannelId = action.payload },
+    setCurrentChannelId: (state, action) => { state.currentChannelId = action.payload; },
     addChannel: channelsAdapter.addOne,
     renameChannel: channelsAdapter.updateOne,
     deleteChannel: channelsAdapter.removeOne,
@@ -94,9 +96,12 @@ const channelsSlice = createSlice({
         state.error = action.error;
       });
   },
-})
+});
 
 export const { actions } = channelsSlice;
 export const selectors = channelsAdapter.getSelectors((state) => state.channels);
-export const selectCurrentChannel = (state) => state.channels.entities[state.channels.currentChannelId];
+export const selectCurrentChannel = (state) => {
+  const { channels } = state;
+  return channels.entities[channels.currentChannelId];
+};
 export default channelsSlice.reducer;

@@ -10,5 +10,5 @@ export default async () => {
       lng: 'ru',
       debug: false,
       resources,
-    })
+    });
 };
