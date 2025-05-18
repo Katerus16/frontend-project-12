@@ -1,6 +1,6 @@
 import '../App.css'
 import HomePage from './HomePage.jsx'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './Login.jsx';
 import NotFound from './NotFound.jsx';
 import Signup from './Signup.jsx';
@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { actions as authUserSlice } from '../slices/authUserSlice.js';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+
 
 
 function App() {

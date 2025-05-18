@@ -19,7 +19,7 @@ export default () => {
   const { t } = useTranslation();
   const authError = useSelector(state => state.authUser.error)
   const redirectToHomePage  = useSelector(state => state.authUser.redirect)
-  if(redirectToHomePage) {
+    if(redirectToHomePage) {
     navigate("/");
   }
   const inputRef = useRef();

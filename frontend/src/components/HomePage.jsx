@@ -23,13 +23,6 @@ const renderModal = ({ modalInfo, hideModal, channels }) => {
 
 export default () => {
   const navigate = useNavigate();
-  if(!localStorage.getItem('token')) {
-    navigate("/login");
-  }
-  const dispatch = useDispatch();
-  const channels = useSelector(selectors.selectAll);
-  const currentChannel = useSelector(selectCurrentChannel);
-
   useEffect(() => {
     dispatch(fetchChannel());
     dispatch(setMessage());
@@ -37,7 +30,16 @@ export default () => {
     navigate("/login");
   }
   }, [])
-
+  const showButton = useSelector(state => state.authUser.showButton)
+  useEffect(() => {
+    if(!showButton) {
+        navigate('/login');
+    }
+  }, [showButton]);
+  
+  const dispatch = useDispatch();
+  const channels = useSelector(selectors.selectAll);
+  const currentChannel = useSelector(selectCurrentChannel);
   const [modalInfo, setModalInfo] = useState({ type: null, item: null });
   const hideModal = () => setModalInfo({ type: null, item: null });
   const showModal = (type, item = null) => setModalInfo({ type, item });
