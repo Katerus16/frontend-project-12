@@ -12,7 +12,7 @@ import { ErrorBoundary, Provider as RollbarProvider } from '@rollbar/react';
 
 const app = async() => {
   const rollbarConfig = {
-    accessToken: 'dd64458647fc4945a428c390e505d0ec', 
+    accessToken: process.env.REACT_APP_ROLLBAR_TOKEN, 
     environment: 'production',
   };
 const i18n = await i18nextru();
