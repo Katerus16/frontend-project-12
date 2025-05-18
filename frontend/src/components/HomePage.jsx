@@ -23,7 +23,9 @@ const renderModal = ({ modalInfo, hideModal, channels }) => {
 
 export default () => {
   const navigate = useNavigate();
-  
+  if(!localStorage.getItem('token')) {
+    navigate("/login");
+  }
   const dispatch = useDispatch();
   const channels = useSelector(selectors.selectAll);
   const currentChannel = useSelector(selectCurrentChannel);

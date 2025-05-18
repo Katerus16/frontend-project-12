@@ -54,9 +54,9 @@ const SignupPage = () => {
 
   return (
     <FormContainer image= 'imagereg.png' imageAlt= 'Регистрация' regfooter={false} >
-      <Form className ='w-50 mx-auto' onSubmit={formik.handleSubmit}>
+      <Form className ='w-100 mx-auto' onSubmit={formik.handleSubmit}>
         <h1 className="text-center mb-4">{'Регистрация'}</h1>
-        <fieldset disabled=''>
+        <fieldset disabled={formik.isSubmitting}>
           <Stack gap={3}>
             <FloatingLabel controlId="floatingUsername" label={'Имя пользователя'} className="position-relative">
               <Form.Control
