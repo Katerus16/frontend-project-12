@@ -9,6 +9,7 @@ import { setMessage } from '../slices/messagesSlice.js';
 import getModal from './modals/index.js';
 import {useNavigate} from "react-router-dom";
 
+
 const renderModal = ({ modalInfo, hideModal, channels }) => {
   if (!modalInfo.type) return null;
   const ModalComponent = getModal(modalInfo.type);

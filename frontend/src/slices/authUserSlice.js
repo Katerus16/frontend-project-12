@@ -33,6 +33,7 @@ const authUserSlice = createSlice({
     logOutUser: (state) => {
       localStorage.removeItem('token');
       state.showButton = false;
+      state.redirect = false;
     },
   },
   extraReducers: (builder) => {

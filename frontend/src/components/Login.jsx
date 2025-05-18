@@ -13,15 +13,19 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 
 
+
 export default () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const authError = useSelector(state => state.authUser.error)
   const redirectToHomePage  = useSelector(state => state.authUser.redirect)
+    
+  useEffect(() => {
     if(redirectToHomePage) {
     navigate("/");
-  }
+     }
+  }, [redirectToHomePage]);
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current?.focus();
