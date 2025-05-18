@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.7.0",
+    "@rollbar/react": "^0.12.1",
     "bootstrap": "^5.3.5",
     "i18next": "^25.1.2",
     "leo-profanity": "^1.7.0",
