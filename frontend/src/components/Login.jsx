@@ -30,11 +30,7 @@ export default () => {
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-  useEffect(() => {
-    if(!!authError) {
-      toast.error(t(authError));
-    }
-  }, [authError]);
+  
   const validationSchema = Yup.object().shape({
     username: Yup.string().trim()
       .min(3, 'From 3 to 20 characters')
