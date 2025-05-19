@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import profanityFilter from 'leo-profanity'
 import { animateScroll } from 'react-scroll'
 
-function Chat ({ currentChannel }){
+function Chat({ currentChannel }) {
   const inputRef = useRef()
   useEffect(() => {
     inputRef.current?.focus()
@@ -73,4 +73,4 @@ function Chat ({ currentChannel }){
   )
 }
 
-export default Chat;
+export default Chat

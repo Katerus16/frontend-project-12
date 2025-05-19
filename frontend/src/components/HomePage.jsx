@@ -21,7 +21,7 @@ const renderModal = ({ modalInfo, hideModal, channels }) => {
   )
 }
 
-function HomePage (){
+function HomePage() {
   const navigate = useNavigate()
   useEffect(() => {
     dispatch(fetchChannel())
@@ -56,4 +56,4 @@ function HomePage (){
   )
 }
 
-export default HomePage;
+export default HomePage

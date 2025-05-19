@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import * as Yup from 'yup'
 
-function Login () {
+function Login() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -102,4 +102,4 @@ function Login () {
   )
 }
 
-export default Login;
+export default Login

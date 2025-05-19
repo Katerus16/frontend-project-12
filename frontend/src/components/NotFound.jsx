@@ -2,7 +2,7 @@ import Image from 'react-bootstrap/Image'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-function NotFound () {
+function NotFound() {
   const { t } = useTranslation()
   return (
     <div className="text-center">
@@ -21,4 +21,4 @@ function NotFound () {
   )
 }
 
-export default NotFound;
+export default NotFound
