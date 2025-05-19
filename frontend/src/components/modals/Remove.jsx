@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import { useDispatch } from 'react-redux';
-import { deleteChannel } from '../../slices/channelsSlice.js';
-import { useTranslation } from 'react-i18next';
+import React, { useState } from 'react'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import Modal from 'react-bootstrap/Modal'
+import { useDispatch } from 'react-redux'
+import { deleteChannel } from '../../slices/channelsSlice.js'
+import { useTranslation } from 'react-i18next'
 
 const Remove = ({ modalInfo: { item: channel }, onHide }) => {
-  const [isSubmitting, setSubmitting] = useState(false);
-  const dispatch = useDispatch();
+  const [isSubmitting, setSubmitting] = useState(false)
+  const dispatch = useDispatch()
 
   const onSubmit = (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-      dispatch(deleteChannel({ id: channel.id }));
-      onHide();
-  };
+    e.preventDefault()
+    setSubmitting(true)
+    dispatch(deleteChannel({ id: channel.id }))
+    onHide()
+  }
 
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <Modal show centered onHide={onHide} keyboard>
@@ -37,7 +37,7 @@ const Remove = ({ modalInfo: { item: channel }, onHide }) => {
         </Form>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default Remove;
+export default Remove

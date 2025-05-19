@@ -1,8 +1,8 @@
 /* eslint no-param-reassign: 0 */
 
-import axios from 'axios';
-import { createAsyncThunk, createSlice, createEntityAdapter } from '@reduxjs/toolkit';
-import routes from '../routes.js';
+import axios from 'axios'
+import { createAsyncThunk, createSlice, createEntityAdapter } from '@reduxjs/toolkit'
+import routes from '../routes.js'
 
 export const sendMessage = createAsyncThunk(
   'message/send',
@@ -15,10 +15,10 @@ export const sendMessage = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       },
-    );
-    return response.data;
+    )
+    return response.data
   },
-);
+)
 export const setMessage = createAsyncThunk(
   'message/set',
   async () => {
@@ -29,12 +29,12 @@ export const setMessage = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       },
-    );
-    return response.data;
+    )
+    return response.data
   },
-);
+)
 
-const messagesAdapter = createEntityAdapter();
+const messagesAdapter = createEntityAdapter()
 
 const messagesSlice = createSlice({
   name: 'messages',
@@ -45,25 +45,25 @@ const messagesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(sendMessage.pending, (state) => {
-        state.loadingStatus = 'loading';
-        state.error = null;
+        state.loadingStatus = 'loading'
+        state.error = null
       })
       .addCase(setMessage.fulfilled, (state, action) => {
-        messagesAdapter.setAll(state, action);
-        state.loadingStatus = 'idle';
-        state.error = null;
+        messagesAdapter.setAll(state, action)
+        state.loadingStatus = 'idle'
+        state.error = null
       })
       .addCase(sendMessage.fulfilled, (state) => {
-        state.loadingStatus = 'idle';
-        state.error = null;
+        state.loadingStatus = 'idle'
+        state.error = null
       })
       .addCase(sendMessage.rejected, (state, action) => {
-        state.loadingStatus = 'failed';
-        state.error = action.error;
-      });
+        state.loadingStatus = 'failed'
+        state.error = action.error
+      })
   },
-});
+})
 
-export const { actions } = messagesSlice;
-export const selectors = messagesAdapter.getSelectors((state) => state.messages);
-export default messagesSlice.reducer;
+export const { actions } = messagesSlice
+export const selectors = messagesAdapter.getSelectors(state => state.messages)
+export default messagesSlice.reducer

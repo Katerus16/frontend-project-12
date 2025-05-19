@@ -1,42 +1,40 @@
-import { useFormik } from 'formik';
-import React, { useEffect, useRef } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import Stack from 'react-bootstrap/Stack';
-import { useDispatch } from 'react-redux';
-import * as Yup from 'yup';
-import { addChannel } from '../../slices/channelsSlice.js';
-import { useTranslation } from 'react-i18next';
-import profanityFilter from 'leo-profanity';
+import { useFormik } from 'formik'
+import React, { useEffect, useRef } from 'react'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import Modal from 'react-bootstrap/Modal'
+import Stack from 'react-bootstrap/Stack'
+import { useDispatch } from 'react-redux'
+import * as Yup from 'yup'
+import { addChannel } from '../../slices/channelsSlice.js'
+import { useTranslation } from 'react-i18next'
+import profanityFilter from 'leo-profanity'
 
-
-const getValidationSchema = (channelNames) => Yup.object().shape({
+const getValidationSchema = channelNames => Yup.object().shape({
   channelName: Yup.string().trim()
     .min(3, 'From 3 to 20 characters')
     .max(20, 'From 3 to 20 characters')
     .required('Required field')
     .notOneOf(channelNames, 'Must be unique'),
-});
+})
 
 const Add = ({ onHide, channels }) => {
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
-  const inputRef = useRef();
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
+  const inputRef = useRef()
   useEffect(() => {
-    inputRef.current.focus();
-  });
+    inputRef.current.focus()
+  })
 
-  const channelNames = channels.map(({ name }) => name);
+  const channelNames = channels.map(({ name }) => name)
   const formik = useFormik({
     initialValues: { channelName: '' },
     validationSchema: getValidationSchema(channelNames),
-    onSubmit: (values) => { 
-        dispatch(addChannel(profanityFilter.clean(values.channelName)));
-        onHide();
+    onSubmit: (values) => {
+      dispatch(addChannel(profanityFilter.clean(values.channelName)))
+      onHide()
     },
-  });
-
+  })
 
   return (
     <Modal show centered onHide={onHide} keyboard>
@@ -71,7 +69,7 @@ const Add = ({ onHide, channels }) => {
         </Form>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default Add;
+export default Add

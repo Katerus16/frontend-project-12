@@ -1,44 +1,44 @@
-import { useFormik } from 'formik';
-import React, { useEffect, useRef } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import Stack from 'react-bootstrap/Stack';
-import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { renameChannel } from '../../slices/channelsSlice.js';
-import { useTranslation } from 'react-i18next';
+import { useFormik } from 'formik'
+import React, { useEffect, useRef } from 'react'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import Modal from 'react-bootstrap/Modal'
+import Stack from 'react-bootstrap/Stack'
+import * as Yup from 'yup'
+import { useDispatch } from 'react-redux'
+import { renameChannel } from '../../slices/channelsSlice.js'
+import { useTranslation } from 'react-i18next'
 
-const getValidationSchema = (channelNames) => Yup.object().shape({
+const getValidationSchema = channelNames => Yup.object().shape({
   channelName: Yup.string().trim()
     .min(3, 'From 3 to 20 characters')
     .max(20, 'From 3 to 20 characters')
     .required('Required field')
     .notOneOf(channelNames, 'Must be unique'),
-});
+})
 
 const Rename = ({ modalInfo: { item: channel }, onHide, channels }) => {
-  const dispatch = useDispatch();
-  const inputRef = useRef();
+  const dispatch = useDispatch()
+  const inputRef = useRef()
   useEffect(() => {
-    inputRef.current.focus();
-  });
+    inputRef.current.focus()
+  })
   useEffect(() => {
-    inputRef.current.select();
-  }, []);
+    inputRef.current.select()
+  }, [])
 
-  const channelNames = channels.map(({ name }) => name);
+  const channelNames = channels.map(({ name }) => name)
   const formik = useFormik({
     initialValues: { channelName: channel.name },
     validationSchema: getValidationSchema(channelNames),
-    onSubmit:  (values) => { 
-      const id = channel.id;
+    onSubmit: (values) => {
+      const id = channel.id
       const name = values.channelName
-      dispatch(renameChannel({ id, name }));
-      onHide();
+      dispatch(renameChannel({ id, name }))
+      onHide()
     },
-  });
-  const { t } = useTranslation();
+  })
+  const { t } = useTranslation()
 
   return (
     <Modal show centered onHide={onHide} keyboard>
@@ -73,7 +73,7 @@ const Rename = ({ modalInfo: { item: channel }, onHide, channels }) => {
         </Form>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default Rename;
+export default Rename
