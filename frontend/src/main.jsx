@@ -12,7 +12,7 @@ import { ErrorBoundary, Provider as RollbarProvider } from '@rollbar/react'
 
 const app = async () => {
   const rollbarConfig = {
-    // eslint-disable-next-line no-use-before-define
+    // eslint-disable-next-line 
     accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
     environment: 'production',
   }
