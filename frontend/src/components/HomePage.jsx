@@ -31,6 +31,7 @@ export default () => {
     navigate("/login");
   }
   }, [])
+  
   const showButton = useSelector(state => state.authUser.showButton)
   useEffect(() => {
     if(!showButton) {

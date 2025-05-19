@@ -23,7 +23,7 @@ export const createAuthUser = createAsyncThunk(
 const initialState = {
   error: '',
   redirect: false,
-  showButton: false,
+  showButton: (!localStorage.getItem('token')) ? false : true,
 };
 
 const authUserSlice = createSlice({
