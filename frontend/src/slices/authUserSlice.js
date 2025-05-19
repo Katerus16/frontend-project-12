@@ -56,8 +56,9 @@ const authUserSlice = createSlice({
         } else (state.error = 'Connection error');
       })
       .addCase(createAuthUser.rejected, (state, action) => {
-        if (action.error.name === 'ERR_BAD_REQUEST') {
-          state.error = 'Invalid username or password';
+        console.log(action)
+        if (action.error.code === 'ERR_BAD_REQUEST') {
+          state.error = 'This user already exists';
         } else (state.error = 'Connection error');
       });
   },

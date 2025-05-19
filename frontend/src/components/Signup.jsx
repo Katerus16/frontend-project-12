@@ -9,6 +9,8 @@ import * as Yup from 'yup';
 import { createAuthUser } from '../slices/authUserSlice';
 import { useSelector, useDispatch } from 'react-redux'
 import {useNavigate} from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().trim()
@@ -24,6 +26,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const SignupPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const authError = useSelector(state => state.authUser.error)
@@ -56,7 +59,7 @@ const SignupPage = () => {
     <FormContainer image= 'imagereg.png' imageAlt= 'Регистрация' regfooter={false} >
       <Form className ='w-100 mx-auto' onSubmit={formik.handleSubmit}>
         <h1 className="text-center mb-4">{'Регистрация'}</h1>
-        <fieldset disabled={formik.isSubmitting}>
+        <fieldset disabled={formik.handleSubmit}>
           <Stack gap={3}>
             <FloatingLabel controlId="floatingUsername" label={'Имя пользователя'} className="position-relative">
               <Form.Control
@@ -90,7 +93,7 @@ const SignupPage = () => {
                 isInvalid={!!(authError) || formik.touched.password && formik.errors.password}
               />
               <Form.Control.Feedback type="invalid" tooltip>
-                  {authError}
+                  {t(authError)}
                 </Form.Control.Feedback>
               <Form.Control.Feedback type="invalid" tooltip>
                 {formik.errors.password}
