@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchChannel, selectors, selectCurrentChannel } from '../slices/channelsSlice.js'
 import ChannelsList from './ChannelsList.jsx'
@@ -21,7 +21,7 @@ const renderModal = ({ modalInfo, hideModal, channels }) => {
   )
 }
 
-export default () => {
+function HomePage (){
   const navigate = useNavigate()
   useEffect(() => {
     dispatch(fetchChannel())
@@ -55,3 +55,5 @@ export default () => {
     </Container>
   )
 }
+
+export default HomePage;

@@ -7,7 +7,7 @@ import Image from 'react-bootstrap/Image'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-export default ({ children, image, imageAlt, regfooter }) => {
+function FormContainer ({ children, image, imageAlt, regfooter }){
   const { t } = useTranslation()
   return (
     <Container fluid className="h-100">
@@ -38,3 +38,5 @@ export default ({ children, image, imageAlt, regfooter }) => {
     </Container>
   )
 }
+
+export default FormContainer;

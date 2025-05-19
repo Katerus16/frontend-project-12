@@ -8,7 +8,7 @@ import { actions as channelActions } from '../slices/channelsSlice.js'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-export default ({ currentChannel, channels, showModal }) => {
+function ChannelList ({ currentChannel, channels, showModal }) {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const currentChannelId = currentChannel ? currentChannel.id : '1'
@@ -53,3 +53,5 @@ export default ({ currentChannel, channels, showModal }) => {
     </Col>
   )
 }
+
+export default ChannelList;

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useFormik } from 'formik'
 import FormContainer from './FormContainer'
 import Stack from 'react-bootstrap/Stack'
@@ -10,9 +10,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import * as Yup from 'yup'
-import { toast } from 'react-toastify'
 
-export default () => {
+function Login () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -54,7 +53,7 @@ export default () => {
   return (
     <FormContainer image="imagelogin.png" imageAlt={t('Login')} regfooter={true}>
       <Form onSubmit={formik.handleSubmit}>
-        <h1 class="text-center mb-4">{t('Login')}</h1>
+        <h1 className="text-center mb-4">{t('Login')}</h1>
         <Stack gap={3}>
           <FloatingLabel controlId="floatingUsername" label={t('Your nickname')} className="position-relative">
             <Form.Control

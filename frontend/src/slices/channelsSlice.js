@@ -3,7 +3,6 @@
 import { createAsyncThunk, createSlice, createEntityAdapter } from '@reduxjs/toolkit'
 import axios from 'axios'
 import routes from '../routes.js'
-import { act } from 'react'
 
 export const fetchChannel = createAsyncThunk(
   'channel/fetch',

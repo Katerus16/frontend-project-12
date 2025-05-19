@@ -1,6 +1,6 @@
 import '../App.css'
 import HomePage from './HomePage.jsx'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from './Login.jsx'
 import NotFound from './NotFound.jsx'
 import Signup from './Signup.jsx'
@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/esm/Button.js'
 import init from '../init.js'
 import { useSelector, useDispatch } from 'react-redux'
 import { actions as authUserSlice } from '../slices/authUserSlice.js'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
   }
   return (
     <BrowserRouter>
-      <div class="d-flex flex-column h-100">
+      <div className="d-flex flex-column h-100">
         <Navbar className="shadow-sm navbar-expand-lg navbar-light bg-white">
           <Container>
             <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>

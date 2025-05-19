@@ -1,6 +1,6 @@
 import React from 'react'
 import Col from 'react-bootstrap/Col'
-import { ArrowRightSquare } from 'react-bootstrap-icons'
+import { ArrowRightSquare, Chat } from 'react-bootstrap-icons'
 import { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { sendMessage, selectors } from '../slices/messagesSlice'
@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import profanityFilter from 'leo-profanity'
 import { animateScroll } from 'react-scroll'
 
-export default ({ currentChannel }) => {
+function Chat ({ currentChannel }){
   const inputRef = useRef()
   useEffect(() => {
     inputRef.current?.focus()
@@ -73,3 +73,5 @@ export default ({ currentChannel }) => {
     </Col>
   )
 }
+
+export default Chat;
