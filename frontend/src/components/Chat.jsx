@@ -1,6 +1,5 @@
-import React from 'react'
 import Col from 'react-bootstrap/Col'
-import { ArrowRightSquare, Chat } from 'react-bootstrap-icons'
+import { ArrowRightSquare } from 'react-bootstrap-icons'
 import { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { sendMessage, selectors } from '../slices/messagesSlice'

@@ -101,3 +101,5 @@ function Login () {
     </FormContainer>
   )
 }
+
+export default Login;
