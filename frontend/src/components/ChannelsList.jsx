@@ -1,4 +1,3 @@
-import React from 'react'
 import { PlusSquareFill } from 'react-bootstrap-icons'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
@@ -8,7 +7,7 @@ import { actions as channelActions } from '../slices/channelsSlice.js'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 
-function ChannelList ({ currentChannel, channels, showModal }) {
+function ChannelList({ currentChannel, channels, showModal }) {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const currentChannelId = currentChannel ? currentChannel.id : '1'
@@ -54,4 +53,4 @@ function ChannelList ({ currentChannel, channels, showModal }) {
   )
 }
 
-export default ChannelList;
+export default ChannelList
