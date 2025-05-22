@@ -2,3 +2,19 @@
 [![Actions Status](https://github.com/Katerus16/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Katerus16/frontend-project-12/actions)
 
 deployed app: https://frontend-project-12-empa.onrender.com/
+
+## Requirements
+
+* Node.js & npm
+
+## Setup
+
+```bash
+make install
+```
+
+## Development
+
+```bash
+make start
+```

@@ -1,9 +1,4 @@
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Card from 'react-bootstrap/Card'
-import CardBody from 'react-bootstrap/CardBody'
-import Image from 'react-bootstrap/Image'
+import { Container, Row, Col, Card, CardBody, Image } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 

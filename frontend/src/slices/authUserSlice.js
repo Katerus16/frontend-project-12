@@ -22,8 +22,7 @@ export const createAuthUser = createAsyncThunk(
 
 const initialState = {
   error: '',
-  redirect: false,
-  showButton: (!localStorage.getItem('token')) ? false : true,
+  isUserAuth: (!localStorage.getItem('token')) ? false : true,
 }
 
 const authUserSlice = createSlice({
@@ -32,8 +31,8 @@ const authUserSlice = createSlice({
   reducers: {
     logOutUser: (state) => {
       localStorage.removeItem('token')
-      state.showButton = false
-      state.redirect = false
+      localStorage.removeItem('username')
+      state.isUserAuth = false
     },
   },
   extraReducers: (builder) => {
@@ -41,14 +40,12 @@ const authUserSlice = createSlice({
       .addCase(addAuthUser.fulfilled, (state, action) => {
         localStorage.setItem('token', action.payload.token)
         localStorage.setItem('username', action.payload.username)
-        state.redirect = true
-        state.showButton = true
+        state.isUserAuth = true
       })
       .addCase(createAuthUser.fulfilled, (state, action) => {
         localStorage.setItem('token', action.payload.token)
         localStorage.setItem('username', action.payload.username)
-        state.redirect = true
-        state.showButton = true
+        state.isUserAuth = true
       })
       .addCase(addAuthUser.rejected, (state, action) => {
         if (action.error.code === 'ERR_BAD_REQUEST') {
@@ -57,7 +54,6 @@ const authUserSlice = createSlice({
         else (state.error = 'Connection error')
       })
       .addCase(createAuthUser.rejected, (state, action) => {
-        console.log(action)
         if (action.error.code === 'ERR_BAD_REQUEST') {
           state.error = 'This user already exists'
         }

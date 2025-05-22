@@ -1,10 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useFormik } from 'formik'
 import FormContainer from './FormContainer'
-import Stack from 'react-bootstrap/Stack'
-import FloatingLabel from 'react-bootstrap/FloatingLabel'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
+import { Stack, FloatingLabel, Form, Button } from 'react-bootstrap'
 import { addAuthUser } from '../slices/authUserSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -16,7 +13,7 @@ function Login() {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const authError = useSelector(state => state.authUser.error)
-  const redirectToHomePage = useSelector(state => state.authUser.redirect)
+  const redirectToHomePage = useSelector(state => state.authUser.isUserAuth)
 
   useEffect(() => {
     if (redirectToHomePage) {

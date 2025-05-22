@@ -1,69 +1,31 @@
-/* eslint no-param-reassign: 0 */
-
-import axios from 'axios'
-import { createAsyncThunk, createSlice, createEntityAdapter } from '@reduxjs/toolkit'
 import routes from '../routes.js'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-export const sendMessage = createAsyncThunk(
-  'message/send',
-  async ({ cleanMessage, channelId, currentUsername }) => {
-    const response = await axios.post(
-      routes.getMessages(),
-      { body: cleanMessage, channelId, username: currentUsername },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      },
-    )
-    return response.data
-  },
-)
-export const setMessage = createAsyncThunk(
-  'message/set',
-  async () => {
-    const response = await axios.get(
-      routes.getMessages(),
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      },
-    )
-    return response.data
-  },
-)
+const setAuthHeader = (headers) => {
+  headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`)
+  return headers
+}
 
-const messagesAdapter = createEntityAdapter()
-
-const messagesSlice = createSlice({
-  name: 'messages',
-  initialState: messagesAdapter.getInitialState({ loadingStatus: 'idle', error: null }),
-  reducers: {
-    addMessage: messagesAdapter.addOne,
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(sendMessage.pending, (state) => {
-        state.loadingStatus = 'loading'
-        state.error = null
-      })
-      .addCase(setMessage.fulfilled, (state, action) => {
-        messagesAdapter.setAll(state, action)
-        state.loadingStatus = 'idle'
-        state.error = null
-      })
-      .addCase(sendMessage.fulfilled, (state) => {
-        state.loadingStatus = 'idle'
-        state.error = null
-      })
-      .addCase(sendMessage.rejected, (state, action) => {
-        state.loadingStatus = 'failed'
-        state.error = action.error
-      })
-  },
+export const messagesApi = createApi({
+  reducerPath: 'messagesApi',
+  tagTypes: ['Messages'],
+  baseQuery: fetchBaseQuery({ baseUrl: routes.getMessages(), prepareHeaders: setAuthHeader }),
+  endpoints: builder => ({
+    getMessages: builder.query({
+      query: () => '',
+      providesTags: ['Messages'],
+    }),
+    sendMessage: builder.mutation({
+      query: ({ cleanMessage, channelId, currentUsername }) => ({
+        url: '',
+        method: 'POST',
+        body: { body: cleanMessage, channelId, username: currentUsername },
+      }),
+    }),
+  }),
 })
 
-export const { actions } = messagesSlice
-export const selectors = messagesAdapter.getSelectors(state => state.messages)
-export default messagesSlice.reducer
+export const {
+  useGetMessagesQuery,
+  useSendMessageMutation,
+} = messagesApi

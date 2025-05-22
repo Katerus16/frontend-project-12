@@ -1,12 +1,9 @@
 import { useFormik } from 'formik'
 import { useEffect, useRef } from 'react'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import Modal from 'react-bootstrap/Modal'
-import Stack from 'react-bootstrap/Stack'
+import { Button, Form, Modal, Stack } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
-import { addChannel } from '../../slices/channelsSlice.js'
+import { useAddChannelMutation } from '../../slices/channelsSlice.js'
 import { useTranslation } from 'react-i18next'
 import profanityFilter from 'leo-profanity'
 
@@ -19,6 +16,7 @@ const getValidationSchema = channelNames => Yup.object().shape({
 })
 
 const Add = ({ onHide, channels }) => {
+  const [addChannel] = useAddChannelMutation()
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const inputRef = useRef()
@@ -31,7 +29,7 @@ const Add = ({ onHide, channels }) => {
     initialValues: { channelName: '' },
     validationSchema: getValidationSchema(channelNames),
     onSubmit: (values) => {
-      dispatch(addChannel(profanityFilter.clean(values.channelName)))
+      addChannel(profanityFilter.clean(values.channelName))
       onHide()
     },
   })

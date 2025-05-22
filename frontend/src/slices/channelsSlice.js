@@ -1,110 +1,67 @@
 /* eslint no-param-reassign: 0 */
-
-import { createAsyncThunk, createSlice, createEntityAdapter } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createSlice } from '@reduxjs/toolkit'
 import routes from '../routes.js'
 
-export const fetchChannel = createAsyncThunk(
-  'channel/fetch',
-  async () => {
-    const response = await axios.get(routes.getChannel(), {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
-    return response.data
-  },
-)
+const setAuthHeader = (headers) => {
+  headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`)
+  return headers
+}
 
-export const addChannel = createAsyncThunk(
-  'channel/add',
-  async (name) => {
-    const response = await axios.post(routes.getChannel(), { name }, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
-    return response.data
-  },
-)
+export const channelsApi = createApi({
+  reducerPath: 'channelsApi',
+  baseQuery: fetchBaseQuery({ baseUrl: routes.getChannels(), prepareHeaders: setAuthHeader }),
+  endpoints: builder => ({
+    getChannels: builder.query({
+      query: () => '',
+      providesTags: ['Channels'],
+    }),
+    addChannel: builder.mutation({
+      query: name => ({
+        url: '',
+        method: 'POST',
+        body: { name },
+      }),
+    }),
+    deleteChannel: builder.mutation({
+      query: id => ({
+        url: `/${id}`,
+        method: 'DELETE',
+      }),
+    }),
+    renameChannel: builder.mutation({
+      query: ({ id, name }) => ({
+        url: `/${id}`,
+        method: 'PATCH',
+        body: { name },
+      }),
+    }),
+  }),
+})
 
-export const renameChannel = createAsyncThunk(
-  'channel/rename',
-  async ({ id, name }) => {
-    const response = await axios.patch(routes.getChannelById(id), { name }, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
-    return response.data
-  },
-)
-
-export const deleteChannel = createAsyncThunk(
-  'channel/delete',
-  async ({ id }) => {
-    const response = await axios.delete(routes.getChannelById(id), {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
-    return response.data
-  },
-)
-
-const channelsAdapter = createEntityAdapter()
-
-const channelsSlice = createSlice({
+export const channelsSlice = createSlice({
   name: 'channels',
-  initialState: channelsAdapter.getInitialState({ loadingStatus: 'idle', error: null, currentChannelId: '1' }),
+  initialState: { currentChannelId: '1' },
   reducers: {
     setCurrentChannelId: (state, action) => { state.currentChannelId = action.payload },
-    addChannel: channelsAdapter.addOne,
-    renameChannel: channelsAdapter.updateOne,
-    deleteChannel: (state, action) => {
-      channelsAdapter.removeOne(state, action)
-      state.currentChannelId = '1'
-    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchChannel.pending, (state) => {
-        state.loadingStatus = 'loading'
-        state.error = null
+      .addMatcher(channelsApi.endpoints.deleteChannel.matchFulfilled, (state, { payload }) => {
+        if (payload.id === state.currentChannelId) {
+          state.currentChannelId = '1'
+        }
       })
-      .addCase(fetchChannel.fulfilled, (state, action) => {
-        channelsAdapter.setAll(state, action)
-        state.loadingStatus = 'idle'
-        state.error = null
-      })
-      .addCase(addChannel.fulfilled, (state, action) => {
-        channelsAdapter.addOne(state, action)
-        state.loadingStatus = 'idle'
-        state.error = null
-        state.currentChannelId = action.payload.id
-      })
-      .addCase(renameChannel.fulfilled, (state, action) => {
-        channelsAdapter.setOne(state, action.payload)
-        state.loadingStatus = 'idle'
-        state.error = null
-      })
-      .addCase(deleteChannel.fulfilled, (state, action) => {
-        channelsAdapter.removeOne(state, action.payload.id)
-        state.loadingStatus = 'idle'
-        state.error = null
-        state.currentChannelId = '1'
-      })
-      .addCase(fetchChannel.rejected, (state, action) => {
-        state.loadingStatus = 'failed'
-        state.error = action.error
+      .addMatcher(channelsApi.endpoints.addChannel.matchFulfilled, (state, { payload }) => {
+        state.currentChannelId = payload.id
       })
   },
 })
 
 export const { actions } = channelsSlice
-export const selectors = channelsAdapter.getSelectors(state => state.channels)
-export const selectCurrentChannel = (state) => {
-  const { channels } = state
-  return channels.entities[channels.currentChannelId]
-}
-export default channelsSlice.reducer
+export const {
+  useGetChannelsQuery,
+  useAddChannelMutation,
+  useDeleteChannelMutation,
+  useRenameChannelMutation,
+} = channelsApi

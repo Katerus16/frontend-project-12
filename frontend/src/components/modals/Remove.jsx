@@ -1,19 +1,17 @@
 import { useState } from 'react'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import Modal from 'react-bootstrap/Modal'
+import { Button, Form, Modal } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { deleteChannel } from '../../slices/channelsSlice.js'
+import { useDeleteChannelMutation } from '../../slices/channelsSlice.js'
 import { useTranslation } from 'react-i18next'
 
 const Remove = ({ modalInfo: { item: channel }, onHide }) => {
   const [isSubmitting, setSubmitting] = useState(false)
   const dispatch = useDispatch()
-
+  const [deleteChannel] = useDeleteChannelMutation()
   const onSubmit = (e) => {
     e.preventDefault()
     setSubmitting(true)
-    dispatch(deleteChannel({ id: channel.id }))
+    deleteChannel(channel.id)
     onHide()
   }
 

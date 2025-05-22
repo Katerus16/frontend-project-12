@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchChannel, selectors, selectCurrentChannel } from '../slices/channelsSlice.js'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useGetChannelsQuery, selectCurrentChannel, channelsApi } from '../slices/channelsSlice.js'
 import ChannelsList from './ChannelsList.jsx'
 import Chat from './Chat.jsx'
 import Container from 'react-bootstrap/esm/Container.js'
 import Row from 'react-bootstrap/Row'
-import { setMessage } from '../slices/messagesSlice.js'
 import getModal from './modals/index.js'
-import { useNavigate } from 'react-router-dom'
 
 const renderModal = ({ modalInfo, hideModal, channels }) => {
   if (!modalInfo.type) return null
@@ -22,25 +20,10 @@ const renderModal = ({ modalInfo, hideModal, channels }) => {
 }
 
 function HomePage() {
-  const navigate = useNavigate()
-  useEffect(() => {
-    dispatch(fetchChannel())
-    dispatch(setMessage())
-    if (!localStorage.getItem('token')) {
-      navigate('/login')
-    }
-  }, [])
+  const { data: channels, isSuccess } = useGetChannelsQuery()
 
-  const showButton = useSelector(state => state.authUser.showButton)
-  useEffect(() => {
-    if (!showButton) {
-      navigate('/login')
-    }
-  }, [showButton])
-
-  const dispatch = useDispatch()
-  const channels = useSelector(selectors.selectAll)
-  const currentChannel = useSelector(selectCurrentChannel)
+  const currentChannelId = useSelector(state => state.channels.currentChannelId)
+  const currentChannel = channels && channels.find(channel => channel.id === currentChannelId)
   const [modalInfo, setModalInfo] = useState({ type: null, item: null })
   const hideModal = () => setModalInfo({ type: null, item: null })
   const showModal = (type, item = null) => setModalInfo({ type, item })
@@ -48,7 +31,7 @@ function HomePage() {
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
       <Row className="h-100 bg-white flex-md-row">
-        <ChannelsList currentChannel={currentChannel} channels={channels} showModal={showModal} />
+        { isSuccess && (<ChannelsList currentChannel={currentChannel} channels={channels} showModal={showModal} />) }
         { currentChannel && (<Chat currentChannel={currentChannel} />) }
       </Row>
       {renderModal({ modalInfo, hideModal, channels })}

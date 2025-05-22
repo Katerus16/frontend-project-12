@@ -1,12 +1,9 @@
 import { useFormik } from 'formik'
 import { useEffect, useRef } from 'react'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import Modal from 'react-bootstrap/Modal'
-import Stack from 'react-bootstrap/Stack'
+import { Button, Form, Modal, Stack } from 'react-bootstrap'
 import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
-import { renameChannel } from '../../slices/channelsSlice.js'
+import { useRenameChannelMutation } from '../../slices/channelsSlice.js'
 import { useTranslation } from 'react-i18next'
 
 const getValidationSchema = channelNames => Yup.object().shape({
@@ -26,7 +23,7 @@ const Rename = ({ modalInfo: { item: channel }, onHide, channels }) => {
   useEffect(() => {
     inputRef.current.select()
   }, [])
-
+  const [renameChannel] = useRenameChannelMutation()
   const channelNames = channels.map(({ name }) => name)
   const formik = useFormik({
     initialValues: { channelName: channel.name },
@@ -34,7 +31,7 @@ const Rename = ({ modalInfo: { item: channel }, onHide, channels }) => {
     onSubmit: (values) => {
       const id = channel.id
       const name = values.channelName
-      dispatch(renameChannel({ id, name }))
+      renameChannel({ id, name })
       onHide()
     },
   })

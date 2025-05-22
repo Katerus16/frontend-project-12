@@ -1,9 +1,6 @@
 import { useFormik } from 'formik'
 import { useEffect, useRef } from 'react'
-import Button from 'react-bootstrap/Button'
-import FloatingLabel from 'react-bootstrap/FloatingLabel'
-import Form from 'react-bootstrap/Form'
-import Stack from 'react-bootstrap/Stack'
+import { Button, FloatingLabel, Form, Stack } from 'react-bootstrap'
 import FormContainer from './FormContainer'
 import * as Yup from 'yup'
 import { createAuthUser } from '../slices/authUserSlice'
@@ -29,7 +26,7 @@ const SignupPage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authError = useSelector(state => state.authUser.error)
-  const redirectToHomePage = useSelector(state => state.authUser.redirect)
+  const redirectToHomePage = useSelector(state => state.authUser.isUserAuth)
   if (redirectToHomePage) {
     navigate('/')
   }

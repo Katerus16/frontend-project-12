@@ -11,4 +11,6 @@ export default async () => {
       debug: false,
       resources,
     })
+
+  return i18n
 }
