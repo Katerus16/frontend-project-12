@@ -1,8 +1,4 @@
 import { io } from 'socket.io-client'
-import { toast } from 'react-toastify'
-import { actions as messagesActions } from './slices/messagesSlice.js'
-import { channelsApi } from './slices/channelsSlice.js'
-import { messagesApi } from './slices/messagesSlice.js'
 import reducer from './slices/index.js'
 import i18nextru from './i18next.js'
 import { I18nextProvider } from 'react-i18next'
@@ -12,10 +8,10 @@ import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 
 export const store = configureStore(reducer)
-export default async (t) => {
+  const Init = async () => {
   const socket = io()
   const rollbarConfig = {
-
+  // eslint-disable-next-line
     accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
     environment: 'production',
   }
@@ -32,3 +28,5 @@ export default async (t) => {
     </I18nextProvider>
   )
 }
+
+export default Init

@@ -24,7 +24,7 @@ function Chat({ currentChannel }) {
         </div>
         <div id="messages-box" className="overflow-auto px-5 ">
           {isSuccess && currentChannelMessages.map(message => (
-            <Message message={message} />
+            <Message key={message.id} message={message} />
           ))}
         </div>
         <div className="mt-auto px-5 py-3">

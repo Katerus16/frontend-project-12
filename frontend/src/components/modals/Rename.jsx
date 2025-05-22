@@ -2,7 +2,6 @@ import { useFormik } from 'formik'
 import { useEffect, useRef } from 'react'
 import { Button, Form, Modal, Stack } from 'react-bootstrap'
 import * as Yup from 'yup'
-import { useDispatch } from 'react-redux'
 import { useRenameChannelMutation } from '../../slices/channelsSlice.js'
 import { useTranslation } from 'react-i18next'
 
@@ -15,7 +14,6 @@ const getValidationSchema = channelNames => Yup.object().shape({
 })
 
 const Rename = ({ modalInfo: { item: channel }, onHide, channels }) => {
-  const dispatch = useDispatch()
   const inputRef = useRef()
   useEffect(() => {
     inputRef.current.focus()

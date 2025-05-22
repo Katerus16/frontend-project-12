@@ -1,7 +1,6 @@
 import { useFormik } from 'formik'
 import { useEffect, useRef } from 'react'
 import { Button, Form, Modal, Stack } from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
 import { useAddChannelMutation } from '../../slices/channelsSlice.js'
 import { useTranslation } from 'react-i18next'
@@ -17,7 +16,6 @@ const getValidationSchema = channelNames => Yup.object().shape({
 
 const Add = ({ onHide, channels }) => {
   const [addChannel] = useAddChannelMutation()
-  const dispatch = useDispatch()
   const { t } = useTranslation()
   const inputRef = useRef()
   useEffect(() => {
