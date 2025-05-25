@@ -6,12 +6,32 @@ import { ErrorBoundary, Provider as RollbarProvider } from '@rollbar/react'
 import App from './components/App.jsx'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
+import { messagesApi } from './slices/messagesSlice.js'
+import { channelsApi, actions } from './slices/channelsSlice.js'
+import log from './logger.js'
 
 export const store = configureStore(reducer)
 const Init = async () => {
   const socket = io()
+  socket
+    .on('newMessage', (payload) => {
+      log('newMessage "event"', payload)
+      store.dispatch(messagesApi.util.invalidateTags(['Messages']))
+    })
+    .on('newChannel', (payload) => {
+      log('newChannel "event"', payload)
+      store.dispatch(channelsApi.util.invalidateTags(['Channels']))
+    })
+    .on('removeChannel', (payload) => {
+      log('removeChannel "event"', payload)
+      store.dispatch(channelsApi.util.invalidateTags(['Channels']))
+      store.dispatch(actions.setCurrentChannelId('1'))
+    })
+    .on('renameChannel', (payload) => {
+      log('renameChannel "event"', payload)
+      store.dispatch(channelsApi.util.invalidateTags(['Channels']))
+    })
   const rollbarConfig = {
-  // eslint-disable-next-line
     accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
     environment: 'production',
   }

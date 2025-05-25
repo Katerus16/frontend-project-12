@@ -1,5 +1,4 @@
 import { useFormik } from 'formik'
-import { useEffect, useRef } from 'react'
 import { Button, FloatingLabel, Form, Stack } from 'react-bootstrap'
 import FormContainer from './FormContainer'
 import * as Yup from 'yup'
@@ -30,10 +29,6 @@ const SignupPage = () => {
   if (redirectToHomePage) {
     navigate('/')
   }
-  const inputRef = useRef()
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
 
   const useSubmit = () => {
     return ({ username, password }) => {
@@ -59,6 +54,7 @@ const SignupPage = () => {
           <Stack gap={3}>
             <FloatingLabel controlId="floatingUsername" label="Имя пользователя" className="position-relative">
               <Form.Control
+                autoFocus
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.username}
@@ -66,7 +62,6 @@ const SignupPage = () => {
                 name="username"
                 autoComplete="username"
                 isInvalid={!!(authError) || (formik.touched.username && formik.errors.username)}
-                ref={inputRef}
               />
               {authError && (
                 <Form.Control.Feedback type="invalid" tooltip></Form.Control.Feedback>

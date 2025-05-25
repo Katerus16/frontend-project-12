@@ -4,6 +4,7 @@ import { Button, Form, Modal, Stack } from 'react-bootstrap'
 import * as Yup from 'yup'
 import { useRenameChannelMutation } from '../../slices/channelsSlice.js'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 const getValidationSchema = channelNames => Yup.object().shape({
   channelName: Yup.string().trim()
@@ -16,13 +17,11 @@ const getValidationSchema = channelNames => Yup.object().shape({
 const Rename = ({ modalInfo: { item: channel }, onHide, channels }) => {
   const inputRef = useRef()
   useEffect(() => {
-    inputRef.current.focus()
-  })
-  useEffect(() => {
     inputRef.current.select()
   }, [])
   const [renameChannel] = useRenameChannelMutation()
   const channelNames = channels.map(({ name }) => name)
+  const { t } = useTranslation()
   const formik = useFormik({
     initialValues: { channelName: channel.name },
     validationSchema: getValidationSchema(channelNames),
@@ -31,9 +30,9 @@ const Rename = ({ modalInfo: { item: channel }, onHide, channels }) => {
       const name = values.channelName
       renameChannel({ id, name })
       onHide()
+      toast.info(t('Channel renamed'))
     },
   })
-  const { t } = useTranslation()
 
   return (
     <Modal show centered onHide={onHide} keyboard>
@@ -48,6 +47,7 @@ const Rename = ({ modalInfo: { item: channel }, onHide, channels }) => {
               <Form.Group controlId="formChannelName" className="position-relative">
                 <Form.Label visuallyHidden>{t('Channel name')}</Form.Label>
                 <Form.Control
+                  autoFocus
                   ref={inputRef}
                   onChange={formik.handleChange}
                   value={formik.values.channelName}

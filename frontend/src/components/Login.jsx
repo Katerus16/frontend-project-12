@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useFormik } from 'formik'
 import FormContainer from './FormContainer'
 import { Stack, FloatingLabel, Form, Button } from 'react-bootstrap'
@@ -20,10 +20,6 @@ function Login() {
       navigate('/')
     }
   }, [redirectToHomePage])
-  const inputRef = useRef()
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
 
   const validationSchema = Yup.object().shape({
     username: Yup.string().trim()
@@ -54,6 +50,7 @@ function Login() {
         <Stack gap={3}>
           <FloatingLabel controlId="floatingUsername" label={t('Your nickname')} className="position-relative">
             <Form.Control
+              autoFocus
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.username}
@@ -61,7 +58,6 @@ function Login() {
               name="username"
               autoComplete="username"
               isInvalid={!!(authError) || (formik.touched.username && formik.errors.username)}
-              ref={inputRef}
             />
             {!!(authError) && (
               <Form.Control.Feedback type="invalid"></Form.Control.Feedback>

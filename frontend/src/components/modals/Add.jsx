@@ -1,10 +1,10 @@
 import { useFormik } from 'formik'
-import { useEffect, useRef } from 'react'
 import { Button, Form, Modal, Stack } from 'react-bootstrap'
 import * as Yup from 'yup'
 import { useAddChannelMutation } from '../../slices/channelsSlice.js'
 import { useTranslation } from 'react-i18next'
 import profanityFilter from 'leo-profanity'
+import { toast } from 'react-toastify'
 
 const getValidationSchema = channelNames => Yup.object().shape({
   channelName: Yup.string().trim()
@@ -17,10 +17,6 @@ const getValidationSchema = channelNames => Yup.object().shape({
 const Add = ({ onHide, channels }) => {
   const [addChannel] = useAddChannelMutation()
   const { t } = useTranslation()
-  const inputRef = useRef()
-  useEffect(() => {
-    inputRef.current.focus()
-  })
 
   const channelNames = channels.map(({ name }) => name)
   const formik = useFormik({
@@ -29,6 +25,7 @@ const Add = ({ onHide, channels }) => {
     onSubmit: (values) => {
       addChannel(profanityFilter.clean(values.channelName))
       onHide()
+      toast.info(t('Channel created'))
     },
   })
 
@@ -45,7 +42,7 @@ const Add = ({ onHide, channels }) => {
               <Form.Group controlId="formChannelName" className="position-relative">
                 <Form.Label visuallyHidden>{t('Channel name')}</Form.Label>
                 <Form.Control
-                  ref={inputRef}
+                  autoFocus
                   onChange={formik.handleChange}
                   value={formik.values.channelName}
                   data-testid="input-channelName"

@@ -1,15 +1,11 @@
 import { useFormik } from 'formik'
 import { ArrowRightSquare } from 'react-bootstrap-icons'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useSendMessageMutation } from '../slices/messagesSlice'
 import { useTranslation } from 'react-i18next'
 import profanityFilter from 'leo-profanity'
 
 function MessageForm({ channelId, currentUsername }) {
-  const inputRef = useRef()
-  useEffect(() => {
-    inputRef.current?.focus()
-  })
   const [sendMessage, { isLoading }] = useSendMessageMutation()
   const { t } = useTranslation()
 
@@ -31,13 +27,13 @@ function MessageForm({ channelId, currentUsername }) {
       <fieldset disabled={isLoading}>
         <div className="input-group has-validation">
           <input
+            autoFocus
             name="message"
             aria-label={t('A new message')}
             placeholder={t('Enter your message...')}
             className="border-0 p-0 ps-2 form-control"
             onChange={formik.handleChange}
             value={formik.values.message}
-            ref={inputRef}
           />
           <button type="submit" disabled="" className="btn btn-group-vertical">
             <ArrowRightSquare size={20} />

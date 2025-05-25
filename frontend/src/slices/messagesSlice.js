@@ -21,6 +21,7 @@ export const messagesApi = createApi({
         method: 'POST',
         body: { body: cleanMessage, channelId, username: currentUsername },
       }),
+      invalidatesTags: ['Messages'],
     }),
   }),
 })

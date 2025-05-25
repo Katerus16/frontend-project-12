@@ -2,18 +2,19 @@ import { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { useDeleteChannelMutation } from '../../slices/channelsSlice.js'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 const Remove = ({ modalInfo: { item: channel }, onHide }) => {
   const [isSubmitting, setSubmitting] = useState(false)
   const [deleteChannel] = useDeleteChannelMutation()
+  const { t } = useTranslation()
   const onSubmit = (e) => {
     e.preventDefault()
     setSubmitting(true)
     deleteChannel(channel.id)
     onHide()
+    toast.info(t('Channel removed'))
   }
-
-  const { t } = useTranslation()
 
   return (
     <Modal show centered onHide={onHide} keyboard>
