@@ -1,6 +1,5 @@
 import { useFormik } from 'formik'
 import { ArrowRightSquare } from 'react-bootstrap-icons'
-import { useEffect } from 'react'
 import { useSendMessageMutation } from '../slices/messagesSlice'
 import { useTranslation } from 'react-i18next'
 import profanityFilter from 'leo-profanity'

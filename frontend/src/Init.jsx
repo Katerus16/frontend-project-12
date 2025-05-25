@@ -32,6 +32,7 @@ const Init = async () => {
       store.dispatch(channelsApi.util.invalidateTags(['Channels']))
     })
   const rollbarConfig = {
+    // eslint-disable-next-line
     accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
     environment: 'production',
   }
@@ -41,7 +42,7 @@ const Init = async () => {
       <RollbarProvider config={rollbarConfig}>
         <ErrorBoundary>
           <Provider store={store}>
-            <App socket={socket} />
+            <App />
           </Provider>
         </ErrorBoundary>
       </RollbarProvider>
